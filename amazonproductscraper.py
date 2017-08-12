@@ -6,6 +6,7 @@ import aiohttp
 
 from scraping_utils.random_headers import random_headers
 from scraping_utils.random_proxies import RandomProxies
+from scraping_utils.amazon_parsers import amazon_uk_product_parser
 
 
 class AmazonProductScraper:
@@ -41,12 +42,9 @@ class AmazonProductScraper:
                 return {'url': url, 'status': 418, 'task': 'failed'}
 
     async def amazon_css_parser(self, response):
-
         if response.get('response'):
-            print('Adding parsing method')
-
-            # Add CSS Parsing Logic
-
+            response = await amazon_uk_product_parser(response)
+            return response
         return response
 
     async def main_wrapper(self, url, **kwargs):
